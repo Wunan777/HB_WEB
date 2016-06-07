@@ -1,5 +1,18 @@
 $(document).ready(function(){
-              
+
+
+              // 判断cookie
+              if( document.cookie )
+              {
+                 $("#User").css({display:"block"});
+                 $("#Logoff").css({display:"block"});
+                 $("#User").html( document.cookie["Account"] );
+              }
+              else
+              {
+                 $("#Login").css({display:"block"});
+                 $("#Sign_Up").css({display:"block"});
+              }
               
               //开启轮播
               $('.carousel').carousel();
@@ -104,7 +117,21 @@ $(document).ready(function(){
               });
               // 退出登录
             　$("#Logoff").on("click",function(){
-                  Login_Off();
+                  var name = $("#User").html();
+                  $.ajax
+                  ({   //请求登录处理页
+                      type:"POST",
+                      url: "Login.jsp", //登录处理页
+                      //传送请求数据
+                      data: { userName: name },//后台获取的信息
+                      success: function (strValue) {  
+                         Login_Off();
+                      },
+                      error:function(){
+                        alert("请求注销错误！");
+                      }
+
+                  });
               });
 
               $(".cancel_btn").on("click",function(){

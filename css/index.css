@@ -6,6 +6,8 @@
                       -webkit-background-clip: text;
                       -webkit-text-fill-color: transparent;
                     }
+         #Login { display: none;}
+         #Sign_Up { display: none;}
          #User { display: none; max-width: 80px; 
                  text-overflow:ellipsis; white-space:nowrap; overflow:hidden; }
                  /*名字过长隐藏*/
