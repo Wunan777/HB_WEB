@@ -7,8 +7,8 @@ function G_Run()
 function Finish()
 {  
    var PC = document.getElementById('PC');
-   PC.innerHTML = cursor.toString(16)-1;
-   alert( cursor.toString(16)-1 );
+   PC.innerHTML = cursor.toString(16);
+   alert( cursor.toString(16) );
    status = 0;
    ReSet();
    newLine("> ");
@@ -47,18 +47,7 @@ function execute()
      /// 输出 : [ fn:ADD, [1,2] ];
     /// 过程中解析不正确返回null
 
-     var str;// 当前行命令
-     //1 首先有当前行
-     if( memory[cursor] == undefined)
-     { 
-       console.log( cursor.toString(16) + "行为und");
-       return ;  //RET函数总finish
-     }
-     else
-     {
-       str = memory[cursor];
-     }
-
+     var str = memory[cursor];
      var arr_fn = E_To_Fn(str); 
      var fn;
      var parameter_arr = [];
@@ -162,6 +151,45 @@ function execute()
          setTimeout(execute,100);
        }
      }
+     else if( arr_fn[0] == RET)
+     {
+         var add = Stack_Pop();
+         if( add[0] == "#" && add[1] == "#")
+         {  // ## 为主函数返回标志
+              console.log("main函数结束！");
+              Finish();
+              return ; 
+         }
+         else if( add[0] == "$") // 中断返回标志 $0#8190
+         { 
+            Level =  parseInt( add.slice(1,2) );
+            cursor = parseInt( add.slice( add.indexOf("#")+1 ) );
+
+            ///
+            fn = arr_fn[0];
+            parameter_arr = arr_fn[1];
+            setTimeout(fn,100,parameter_arr);  // 其余先放入后执行
+            cursor++;
+            setTimeout(execute,100);
+         }
+         else if( add[0] == "#" )
+         {
+             cursor = parseInt( add.slice(1) );
+
+             //
+             fn = arr_fn[0];
+             parameter_arr = arr_fn[1];
+             setTimeout(fn,100,parameter_arr);  // 其余先放入后执行
+             cursor++;
+             setTimeout(execute,100);
+         }
+         else
+         { 
+           console.log("错误的返回值！");
+           Finish();
+           return ; 
+         }
+     }
      else
      {
         fn = arr_fn[0];
@@ -176,7 +204,11 @@ function execute()
 
 function E_To_Fn(content) 
 {   
-   
+    if( typeof(content)!= "string" || content.length < 2) 
+    {
+       return null;
+    }
+
     var content = content;
     var code = content.slice(0,2);
     var Each_Date = [];
@@ -245,10 +277,7 @@ function E_To_Fn(content)
         }
 
 
-      if( content.length < 2 ) // 长度必须大于2
-      {
-          return null;
-      }
+
 
     for (var i = 0; i < table.length; i++) 
     {

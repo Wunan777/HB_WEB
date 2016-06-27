@@ -1,6 +1,3 @@
-           //当前正在编辑行
-          // 五种类型参数 R_0,R_1,OFFSET,PORT,MVRD_NEXT
-        // Start.addEventListener("click",Init);
 var table = [
             "ADD 00 R_2", 
             "SUB 01 R_2",
@@ -67,9 +64,15 @@ var Level_Change = 0;
 function Init()
 {
   var Start = document.getElementById('Start');
+  var ReStart = document.getElementById('ReStart');
+  var Clear = document.getElementById('Clear');
   var Button1 = document.getElementById('btn1');
   var Button2 = document.getElementById('btn2');
   var Button3 = document.getElementById('btn3');
+  
+  Start.addEventListener("click",start);
+  ReStart.addEventListener("click",reStart);
+  Clear.addEventListener("click",clear);
   Button1.addEventListener("click",Jump1);
   Button2.addEventListener("click",Jump2);
   Button3.addEventListener("click",Jump3);
@@ -148,7 +151,7 @@ function keyDown(e)
          var t = Complete_Binary( Hex_To_Binary( PORT["81"] ) );// 0000 0000 0000 0000
          PORT["81"] = Binary_To_Hex( t.slice(0,1) + '1' + t.slice(2) );
       }
-      else  if( status ==4) // U
+      else  if( status == 4) // U
       { 
          // U命令进行时 无法输入字符
       }
@@ -188,4 +191,61 @@ function Jump3()
      alert( cursor.toString(16) );
      Level = Level_Change;
   }
+}
+function start()
+{
+   var console = document.getElementById('console');
+   console.innerHTML = "<p>TEC-XP Simulation Program</p><p>Version 2.0 2016.3.28</p><p>Computer Architectur DUT</p><p id='now'>> </p>";
+}
+function reStart()
+{
+  memory = [];
+  PC = 0; 
+  cursor = 0;
+  status = 0; 
+  PORT = {"80":"0000","81":"0000"};
+  R_Arr = {
+              "R0":"",
+              "R1":"",
+              "R2":"",
+              "R3":"",
+              "R6":"",
+              "R7":"",
+              "R8":"",
+              "R9":"",
+              "R10":"",
+              "R11":"",
+              "R12":"",
+              "R13":"",
+              "R14":"",
+              "R15":""
+  };
+  SP = [];
+  C = "0";
+  Z = "1";      
+  Level = 0;
+  Level_Change = 0;
+  start();
+}
+function clear()
+{   
+   var con = document.getElementById('console');
+   if( status == 3) //G 运行过程中
+   { 
+     var p = document.createElement("p");
+     p.innerHTML = "> ";
+     con.innerHTML = "";
+     con.appendChild(p);
+   }
+   else if( status == 1 || status == 2 || status == 0) // A E
+   { 
+     var p = con.getElementsByTagName('p');
+     var t = p[ p.length - 1 ];
+     con.innerHTML = "";
+     con.appendChild(t);
+   }
+   else
+   { 
+      console.log(status);
+   }
 }

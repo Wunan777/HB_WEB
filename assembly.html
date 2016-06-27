@@ -63,14 +63,14 @@
   <!-- 主要内容 -->
   <div class="container" >
       <div class="col-md-12" >
-                <div id="console" >
+                <div id="console">
                 </div>
                 
                 <div id="control_div">
                   <div id="button_area">
-                    <div id="Reset" class="button">Reset</div>
+                    <div id="ReStart" class="button">ReStart</div>
                     <div id="Start" class="button">Start</div>
-                    <div id="Test" class="button">Test</div>
+                    <div id="Clear" class="button">Clear</div>
                     <div id="btn1" class="button">Button1</div>
                     <div id="btn2" class="button">Button2</div>
                     <div id="btn3" class="button">Button3</div>
@@ -183,8 +183,6 @@
         <div class="cancel_btn"></div>
      </form> 
   </div>
-  
-
 </body>
 
 <script src="js/jquery-2.1.1.js"></script>
@@ -199,10 +197,7 @@
 <script type="text/javascript" src="js/assembly/Draw_Line.js"></script>
 <script type="text/javascript" src="js/assembly/index.js"></script>  
 <script type="text/javascript">
-$("#Start").on('click',function(){
-   $("#console").html("<p>TEC-XP Simulation Program</p><p>Version 2.0 2016.3.28</p><p>Computer Architectur DUT</p><p id='now'>> </p>");
    Init();
-})
 </script>
 
 </html>

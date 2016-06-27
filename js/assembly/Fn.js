@@ -399,20 +399,23 @@
               Set_R( arr[0] , Stack_Pop() );
          }
          function OUT(arr)
-         {  
+         {   /////////////////////////////////////////////// p 问题
              // arr[0] -> 80/81
              // R0 -> PORT 80/81
              // 输出PORT 80/81
              // PORT 81最高位变一
              var port_num = arr[0]; //80
-             var p = document.getElementById('now');
+
+             var con= document.getElementById('console');
+             var p = con.getElementsByTagName('p');
+             var lastP = p[p.length-1];
 
              Set_Port( port_num , Get_R("0") );
              ///////// 模拟外设输出
              //console.log( "R0" + Get_R('0') + " PORT_80 " + Get_Port(arr[0]) );
              console.log( "输出 : " + String.fromCharCode( parseInt(Get_Port(port_num),16)) ); 
             
-             p.innerHTML += String.fromCharCode( parseInt(Get_Port(port_num),16) );
+             lastP.innerHTML += String.fromCharCode( parseInt(Get_Port(port_num),16) );
              /////////
              var t = Complete_Binary( Hex_To_Binary( Get_Port("81") ) );
              // t 0100 0000 0000 0000
@@ -422,27 +425,7 @@
 
          function RET(arr)
          {
-             var add = Stack_Pop();
-             if( add[0] == "#" && add[1] == "#")
-             {  // ## 为主函数返回标志
-                  console.log("main函数结束！");
-                  Finish();
-                  cursor = -1;
-                  return ; 
-             }
-             else if( add[0] == "$") // 中断返回标志 $0#8190
-             { 
-                Level =  parseInt( add.slice(1,2) );
-                cursor = parseInt( add.slice( add.indexOf("#")+1 ) );
-             }
-             else if( add[0] == "#" )
-             {
-                 cursor = parseInt( add.slice(1) );
-             }
-             else
-             { 
-               console.log("错误的返回值！");
-             }
+             
          }
          function CALA(arr)
          { //arr[0] 地址
